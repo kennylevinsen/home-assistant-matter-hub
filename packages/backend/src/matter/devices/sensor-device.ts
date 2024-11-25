@@ -12,6 +12,10 @@ import {
   humiditySensorConfig,
   HumiditySensorType,
 } from "./sensor/humidity-sensor.js";
+import {
+  carbonDioxideSensorConfig,
+  CarbonDioxideSensorType,
+} from "./sensor/carbon-dioxide-sensor.js";
 import { HomeAssistantBehavior } from "../custom-behaviors/home-assistant-behavior.js";
 
 export function SensorDevice(
@@ -29,6 +33,12 @@ export function SensorDevice(
     return new MatterDevice(HumiditySensorType, homeAssistant, {
       relativeHumidityMeasurement: {
         config: humiditySensorConfig,
+      },
+    });
+  } else if (deviceClass == SensorDeviceClass.carbon_dioxide) {
+    return new MatterDevice(CarbonDioxideSensorType, homeAssistant, {
+      carbonDioxideConcentrationMeasurement: {
+        config: carbonDioxideSensorConfig,
       },
     });
   }

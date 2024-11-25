@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-
+exit 0
 PACKAGE_VERSION=$(tar xfO package.tgz package/package.json | jq -r ".version")
 IMAGE_NAME="ghcr.io/t0bst4r/home-assistant-matter-hub"
 
