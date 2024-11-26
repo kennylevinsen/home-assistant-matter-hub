@@ -1,4 +1,5 @@
 import Box from "@mui/material/Box";
+import { CarbonDioxideConcentrationMeasurementState } from "./states/CarbonDioxideConcentrationMeasurementState.tsx";
 import { OnOffState } from "./states/OnOffState.tsx";
 import { FC, useEffect, useState } from "react";
 import { Checkbox, Tooltip } from "@mui/material";
@@ -10,6 +11,7 @@ import { TemperatureMeasurementState } from "./states/TemperatureMeasurementStat
 import { OccupancySensingState } from "./states/OccupancySensingState.tsx";
 import {
   BooleanStateClusterState,
+  CarbonDioxideConcentrationMeasurementClusterState,
   ClusterId,
   ColorControlClusterState,
   DoorLockClusterState,
@@ -31,6 +33,9 @@ export interface ClusterStateProps {
 }
 
 const renderer: Record<ClusterId, FC<{ state: unknown }> | null> = {
+  [ClusterId.carbonDioxideConcentrationMeasurement]: ({ state }) => (
+    <CarbonDioxideConcentrationMeasurementState state={state as CarbonDioxideConcentrationMeasurementClusterState} />
+  ),
   [ClusterId.onOff]: ({ state }) => (
     <OnOffState state={state as OnOffClusterState} />
   ),

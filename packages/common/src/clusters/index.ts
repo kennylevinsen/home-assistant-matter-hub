@@ -1,4 +1,5 @@
 export * from "./boolean-state.js";
+export * from "./carbon-dioxide-concentration-measurement.js";
 export * from "./color-control.js";
 export * from "./door-lock.js";
 export * from "./level-control.js";
@@ -17,6 +18,7 @@ export enum ClusterId {
   identify = "identify",
   groups = "groups",
 
+  carbonDioxideConcentrationMeasurement = "carbonDioxideConcentrationMeasurement",
   booleanState = "booleanState",
   colorControl = "colorControl",
   doorLock = "doorLock",
