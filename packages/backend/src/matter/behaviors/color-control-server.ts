@@ -16,6 +16,7 @@ export class ColorControlServerBase extends FeaturedBase {
   declare state: ColorControlServerBase.State;
 
   override async initialize() {
+    this.state.colorMode = ColorControl.ColorMode.ColorTemperatureMireds;
     await super.initialize();
 
     const homeAssistant = await this.agent.load(HomeAssistantEntityBehavior);
