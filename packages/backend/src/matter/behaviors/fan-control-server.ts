@@ -15,6 +15,7 @@ const FeaturedBase = Base.with(
   "MultiSpeed",
   "AirflowDirection",
   "Auto",
+  "Rocking",
 );
 
 export class FanControlServerBase extends FeaturedBase {
@@ -42,6 +43,12 @@ export class FanControlServerBase extends FeaturedBase {
         this.targetAirflowDirectionChanged,
       );
     }
+    if (this.features.rocking) {
+      this.reactTo(
+        this.events.rockSetting$Changed,
+        this.targetRockSettingChanged,
+      );
+    }
   }
 
   private update(entity: HomeAssistantEntityInformation) {
@@ -51,6 +58,7 @@ export class FanControlServerBase extends FeaturedBase {
     const percentage = attributes.percentage ?? 0;
     const speedMax = Math.round(100 / (attributes.percentage_step ?? 100));
     const speed = Math.ceil(speedMax * (percentage * 0.01));
+    const oscillating = attributes.oscillating ?? false;
 
     const fanModeSequence = utils.getMatterFanModeSequence({
       auto: this.features.auto,
@@ -81,6 +89,13 @@ export class FanControlServerBase extends FeaturedBase {
             airflowDirection: utils.getMatterAirflowDirection(
               attributes.current_direction,
             ),
+          }
+        : {}),
+
+      ...(this.features.rocking
+        ? {
+            rockSupport: { rockRound: true },
+            rockSetting: { rockRound: oscillating },
           }
         : {}),
     });
@@ -182,6 +197,25 @@ export class FanControlServerBase extends FeaturedBase {
       return;
     }
     await homeAssistant.callAction("fan.set_direction", { direction });
+  }
+
+  private async targetRockSettingChanged(
+    rockSetting: { rockLeftRight?: boolean; rockUpDown?: boolean; rockRound?: boolean },
+  ) {
+    const homeAssistant = this.agent.get(HomeAssistantEntityBehavior);
+    if (!homeAssistant.isAvailable) {
+      return;
+    }
+
+    const currentAttributes = homeAssistant.entity.state
+      .attributes as FanDeviceAttributes;
+    const current = currentAttributes.oscillating ?? false;
+    const oscillating = rockSetting.rockLeftRight || rockSetting.rockUpDown || rockSetting.rockRound;
+    if (current == oscillating) {
+      return;
+    }
+
+    await homeAssistant.callAction("fan.oscillate", { oscillating })
   }
 }
 

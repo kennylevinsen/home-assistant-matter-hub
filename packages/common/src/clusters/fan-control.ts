@@ -22,6 +22,12 @@ export enum FanControlFanModeSequence {
   OffHigh = 5,
 }
 
+export enum RockBitmap {
+  RockLeftRight = 0,
+  RockUpDown = 1,
+  RockRound = 2,
+}
+
 export interface FanControlClusterState {
   fanMode?: FanControlFanMode;
   fanModeSequence?: FanControlFanModeSequence;
@@ -31,4 +37,6 @@ export interface FanControlClusterState {
   speedSetting?: number;
   speedCurrent?: number;
   airflowDirection?: FanControlAirflowDirection;
+  rockSupport: RockBitmap,
+  rockSetting: RockBitmap,
 }

@@ -29,6 +29,9 @@ const FanControlFeatures = (supportedFeatures: number) => {
   if (testBit(supportedFeatures, FanDeviceFeature.DIRECTION)) {
     features.push("AirflowDirection");
   }
+  if (testBit(supportedFeatures, FanDeviceFeature.OSCILLATE)) {
+    features.push("Rocking");
+  }
   return features;
 };
 
